@@ -127,14 +127,6 @@ local function GoToCoords(X,Y,Z)
     GoToZ(Z)
     GoToY(Y)
 end
-local function rs_pulse(times, mean_time)
-    for i = 1, times  do
-        rs.setOutput(3,1)
-        os.sleep(2)
-        rs.setOutput(3,0)
-        os.sleep(mean_time)
-    end
-end
 local function addTask( name, endT, prio )
     if tasks[name] == nil then
         tasks[name] = {endT,prio}
@@ -179,12 +171,6 @@ local function swapTurbine()
     robot.drop()
     SetOrientation("X-")
     RobotDown()
-    os.sleep(300)
-    rs.setOutput(2, 1)
-    rs.setOutput(2, 0)
-    os.sleep(300)
-    rs.setOutput(2, 1)
-    rs.setOutput(2, 0)
     RobotDown()
     addTask( "swapTurbine", os.time()/72 + 60*60*24, 2 )
 end
@@ -246,18 +232,6 @@ local function checkMaintenance()
             robot.select(4)
             robot.drop(4)
         end
-        GoToCoords(0,1,-2)
-        SetOrientation("X+")
-        rs_pulse(UseTimes*2, 300)
-        GoToCoords(0,1,-1)
-        SetOrientation("X+")
-        rs_pulse(UseTimes*2, 60)
-        GoToCoords(0,1,1)
-        SetOrientation("X+")
-        rs_pulse(UseTimes*4, 60)
-        GoToCoords(0,1,2)
-        SetOrientation("X+")
-        rs_pulse(UseTimes*4, 10)
     end
     robot.select(1)
     GoToCoords(0,0,0)

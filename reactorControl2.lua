@@ -1,7 +1,6 @@
 local component = require("component")
 local robot = require("robot")
 local inv = component.inventory_controller
-local rs = component.redstone
 local tasks = {}
 local orientation = "Z-"
 local orientationNum = 3
@@ -136,14 +135,6 @@ local function GoToCoords(X,Y,Z)
     GoToX(X)
     GoToZ(Z)
     GoToY(Y)
-end
-local function rs_pulse(times, mean_time)
-    for i = 1, times  do
-        rs.setOutput(3,1)
-        os.sleep(1)
-        rs.setOutput(3,0)
-        os.sleep(mean_time)
-    end
 end
 local function addTask( name, endT, prio )
     if tasks[name] == nil then
@@ -304,18 +295,6 @@ local function checkMaintenance()
             SetOrientation("Z-")
             unloadFixes()
         end
-        GoToCoords(2,1,0)
-        SetOrientation("Z+")
-        rs_pulse(UseTimes*2, 300)
-        GoToCoords(1,1,0)
-        SetOrientation("Z+")
-        rs_pulse(UseTimes*2, 60)
-        GoToCoords(-1,1,0)
-        SetOrientation("Z+")
-        rs_pulse(UseTimes*4, 60)
-        GoToCoords(-2,1,0)
-        SetOrientation("Z+")
-        rs_pulse(UseTimes*4, 10)
     end
     robot.select(1)
     GoToCoords(0,0,0)
